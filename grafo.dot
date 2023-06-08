@@ -1,0 +1,26 @@
+
+digraph G {
+  rankdir = LR;
+  node [shape = circle;];
+  edge [color = gray;];
+  
+  A -> D [label = "1"; dir = "both";];
+  A -> B [label = "1"; dir = "both";];
+  
+  
+  I -> A [label = "9"; dir = "both";];
+  I -> C [label = "2"; dir = "both";];
+  
+  C -> F [label = "10"; dir = "both";];
+  C -> B [label = "1"; dir = "both";];
+  
+  B -> D [label = "7"; dir = "both";];
+  B -> F [label = "6"; dir = "both";];
+  
+  F -> T [label = "2"; dir = "both";];
+  
+  D -> E [label = "2"; dir = "both";];
+  D -> T [label = "18"; dir = "both";];
+  
+  E -> T [label = "9"; dir = "both";];
+}
