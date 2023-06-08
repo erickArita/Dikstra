@@ -1,7 +1,3 @@
-//Grafo de entrada para algoritmo Dikstra
-
-//crea este grafo pero cada nodo se relacione bidireccinalmente
-
 function dijkstra(graph, startNode, endNode) {
   const distances = {};
   const visited = {};
