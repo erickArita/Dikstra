@@ -1,70 +1,65 @@
-function dijkstra(graph, startNode, endNode) {
-  const distances = {};
-  const visited = {};
-  const previous = {};
-  const queue = {};
+function dijkstra(grafo, nodoInicial, nodoFinal) {
+  const distancias = {};
 
-  // Inicializar las distancias de todos los nodos como infinito, excepto el nodo de inicio
-  for (let node in graph) {
-    distances[node] = Infinity;
+  const visitados = {};
+
+  const previos = {};
+
+  const cola = {};
+
+  for (let node in grafo) {
+    distancias[node] = Infinity;
   }
-  distances[startNode] = 0;
+  distancias[nodoInicial] = 0;
 
-  // Agregar el nodo de inicio a la cola de prioridad
-  queue[startNode] = 0;
+  cola[nodoInicial] = 0;
 
-  while (Object.keys(queue).length > 0) {
-    let currentNode = null;
-    let currentDistance = Infinity;
+  while (Object.keys(cola).length > 0) {
+    let nodoActual = null;
+    let distanciaActual = Infinity;
 
-    // Encontrar el nodo con la distancia más corta en la cola de prioridad
-    for (let node in queue) {
-      if (queue[node] < currentDistance) {
-        currentNode = node;
-        currentDistance = queue[node];
+    for (let nodo in cola) {
+      if (cola[nodo] < distanciaActual) {
+        nodoActual = nodo;
+        distanciaActual = cola[nodo];
       }
     }
-    debugger;
-    delete queue[currentNode];
+    delete cola[nodoActual];
 
-    if (visited[currentNode]) {
-      continue; // Ignorar el nodo si ya ha sido visitado
+    if (visitados[nodoActual]) {
+      continue;
     }
 
-    visited[currentNode] = true;
+    visitados[nodoActual] = true;
 
-    // Si se llega al nodo de destino, construir y devolver la ruta óptima
-    if (currentNode === endNode) {
+    if (nodoActual === nodoFinal) {
       const path = [];
-      let node = endNode;
-      while (node !== startNode) {
+      let node = nodoFinal;
+      while (node !== nodoInicial) {
         path.unshift(node);
-        node = previous[node];
+        node = previos[node];
       }
-      path.unshift(startNode);
-      return { distance: distances[endNode], path };
+      path.unshift(nodoInicial);
+      return { distancia: distancias[nodoFinal], ruta };
     }
 
-    for (let neighbor in graph[currentNode]) {
-      debugger;
-      const distance = graph[currentNode][neighbor];
-      const totalDistance = distances[currentNode] + distance;
+    for (let vecino in grafo[nodoActual]) {
+      const distancia = grafo[nodoActual][vecino];
+      const distanciaTotal = distancias[nodoActual] + distancia;
 
-      // Si se encuentra un camino más corto hacia el vecino, actualizar la distancia y el nodo anterior
-      if (totalDistance < distances[neighbor]) {
-        distances[neighbor] = totalDistance;
-        previous[neighbor] = currentNode;
-        queue[neighbor] = totalDistance;
+      if (distanciaTotal < distancias[vecino]) {
+        distancias[vecino] = distanciaTotal;
+        previos[vecino] = nodoActual;
+        cola[vecino] = distanciaTotal;
       }
     }
   }
 
-  // No se encontró una ruta hacia el nodo de destino
-  return { distance: Infinity, path: [] };
+  return { distancia: Infinity, ruta: [] };
 }
 
 // Ejemplo de uso:
-const grafo = {
+const grafo1 = {
   I: { A: 9, C: 2 },
   A: { I: 9, B: 1, D: 1 },
   C: { I: 2, B: 1, F: 10 },
@@ -74,9 +69,19 @@ const grafo = {
   E: { D: 2, T: 9 },
   T: { F: 2, E: 9, D: 18 },
 };
+
+const grafo2 = {
+  0: { 1: 2, 2: 6 },
+  1: { 3: 5 },
+  2: { 3: 8 },
+  3: { 5: 15, 4: 10 },
+  4: { 5: 6, 6: 2 },
+  5: { 6: 6 },
+};
+
 const startNode = "I";
 const endNode = "T";
 
-const { distance, path } = dijkstra(grafo, startNode, endNode);
+const { distance, path } = dijkstra(grafo1, startNode, endNode);
 console.log("Distancia más corta:", distance);
 console.log("Ruta óptima:", path);
